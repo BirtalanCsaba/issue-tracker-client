@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { LoginPage } from "./Pages/Login/loginPage";
+import PrivateRoute from "./Components/PrivateRoute/privateRoute";
+import { IPrivateRouteProps } from "./Components/PrivateRoute/privateRoute.types";
+import { RegisterPage } from "./Pages/Register/registerPage";
+import { IssueItem } from "./Components/IssueItem/issueItem";
+import { IssuePhaseComponent } from "./Components/IssuePhase/issuePhase";
 
-function App() {
+export const App = (): JSX.Element => {
+  const defaultProtectedRouteProps: Omit<IPrivateRouteProps, 'outlet'> = {
+    authenticationPath: '/login',
+  };
+
+  const isUserAuthenticated = (): boolean => {
+    return false;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={isUserAuthenticated() ? <div> app</div> : <LoginPage /> }/>
+        <Route path='login' element={<LoginPage />}/>
+        <Route path='register' element={<RegisterPage />}/>
+        <Route path='issueTrackerApp' element={<PrivateRoute authenticationPath='/login' outlet={<div>app</div>} />} />
+        <Route path='issue' element={<IssueItem issueId="dsadsa"/>} />
+        <Route path='issuePhase' element={<IssuePhaseComponent issuePhaseId="dsadsa"/>} />
+      </Routes>
+    </BrowserRouter>
   );
-}
-
-export default App;
+};
