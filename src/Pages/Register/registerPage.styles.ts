@@ -7,7 +7,7 @@ export const RegisterContainerStyle: React.CSSProperties = {
 
 export const RegisterFormContainerStyle: React.CSSProperties = {
     backgroundColor: "white",
-    height: "75vh",
+    height: "85vh",
     width: "30vw",
     borderRadius: "20px"
 }

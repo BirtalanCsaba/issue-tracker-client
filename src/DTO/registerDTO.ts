@@ -1,6 +1,7 @@
 import { ILoginDTO } from "./loginDTO";
 
 export interface IRegisterDTO extends ILoginDTO {
-    firstName: string;
-    lastName: string;
+    firstName: string,
+    lastName: string,
+    email: string
 };

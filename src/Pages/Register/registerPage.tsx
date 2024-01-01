@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { IRegisterDTO } from "../../DTO/registerDTO";
 import { AuthorizationService } from "../../Utils/services";
 import { FirstNameContainerStyle, LabelStyle, RegisterContainerStyle, RegisterFormContainerStyle, MiddleFieldContainerStyle, RepeatPasswordContainerStyle, ButtonRegisterStyle, ButtonLoginStyle, ErrorMessageStyle } from "./registerPage.styles";
+import Cookies from "js-cookie";
 
 export const RegisterPage = (): JSX.Element => {
     const navigate = useNavigate();
+    const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [repeatPassword, setRepeatPassword] = useState<string>('');
@@ -20,7 +22,7 @@ export const RegisterPage = (): JSX.Element => {
 
     const handleSubmit = async (e: any) => {
         var newErrorMessage: string = '';
-        if (firstName.trim() === "" || lastName.trim() === "" || email.trim() === "" || password.trim() === "") {
+        if (firstName.trim() === "" || lastName.trim() === "" || email.trim() === "" || password.trim() === "" || username.trim() === "") {
             newErrorMessage += "All fields are required, none of them can be empty."
         }
 
@@ -34,6 +36,7 @@ export const RegisterPage = (): JSX.Element => {
         }
 
         const registerDTO: IRegisterDTO = {
+            username: username,
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -42,13 +45,12 @@ export const RegisterPage = (): JSX.Element => {
 
         AuthorizationService.RegisterUser(registerDTO)
             .then(function (response) {
-                // localStorage.setItem('jwt', response.data.jwt);
-                // localStorage.setItem('userType', response.data.userType);
-                // props.setCurrentUserId(response.data.userId);
-                // navigate("/issueTrackerApp");
+                console.log(response);
+                // Cookies.set("jwtUser", response.data);
+                navigate("/issue");
             })
             .catch(function (error) {
-                setErrorMessage(error.response.data.message)
+                setErrorMessage(error.code)
             });
     };
 
@@ -85,6 +87,16 @@ export const RegisterPage = (): JSX.Element => {
                         onChange={(event: any) => setLastName(event.target.value)}
                     />
                 </StackItem >
+                <StackItem style={MiddleFieldContainerStyle}>
+                    <Label style={LabelStyle}>
+                        Username
+                    </Label>
+                    <TextField
+                        rows={1}
+                        value={username}
+                        onChange={(event: any) => setUsername(event.target.value)}
+                    />
+                </StackItem>
                 <StackItem style={MiddleFieldContainerStyle}>
                     <Label style={LabelStyle}>
                         Email

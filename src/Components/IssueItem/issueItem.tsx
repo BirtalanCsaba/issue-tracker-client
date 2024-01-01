@@ -17,7 +17,6 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
 
     React.useEffect(() => {
         const readIssueDTO: IReadIssueDTO = {
-            jwt: 'some jwt',
             issueId: props.issueId
         };
 

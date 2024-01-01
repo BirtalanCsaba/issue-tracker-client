@@ -5,9 +5,11 @@ import { IReadIssueDTO } from "../DTO/readIssueDTO";
 import { IIsue } from "../Models/issue";
 import { Priority } from "../Enums/priority";
 import { IReadIssuePhaseDTO } from "../DTO/readIssuePhase";
-import { IIssuePhase } from "../Models/issuePhase";
+import { IPhase } from "../Models/phase";
+import { url } from "inspector";
+import { GetCurrentUserJWT } from "./functions";
 
-const BASE_URL = "https://localhost:44368/api/";
+const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
 export namespace AuthorizationService {
     export const LoginUser = (loginDTO: ILoginDTO) => {
@@ -15,7 +17,11 @@ export namespace AuthorizationService {
     };
 
     export const RegisterUser = (registerDTO: IRegisterDTO): Promise<AxiosResponse<any, any>> => {
-        return axios.post(`${BASE_URL}Authorization/register`, registerDTO);
+        return axios.post(`${BASE_URL}auth/register`, registerDTO, {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
     };
 
     export const LogoutUser = (): Promise<AxiosResponse<any, any>> => {
@@ -45,8 +51,8 @@ export namespace IssuesService {
 export namespace IssuePhasesService {
     export const ReadIssuePhase = (readIssuePhaseDTO: IReadIssuePhaseDTO) => {
         // return axios.post(`${BASE_URL}IssuePhases/read`);
-        const issuePhase: IIssuePhase = {
-            issuePhaseId: 'here',
+        const issuePhase: IPhase = {
+            phaseId: 'here',
             name: 'Testing',
             issues: [
                 {
@@ -60,4 +66,24 @@ export namespace IssuePhasesService {
         };
         return issuePhase;
     }
+};
+
+export namespace KanbanService {
+    export const ReadAllKanbansByCurrentUser = () => {
+        return axios.get(`${BASE_URL}kanban/user/2`, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': `Bearer ${GetCurrentUserJWT()}`
+            }
+        });
+    };
+
+    export const ReadKanbanById = (kanbanId: string) => {
+        return axios.get(`${BASE_URL}kanban/readById/?id=${kanbanId}`, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': `Bearer ${GetCurrentUserJWT()}`
+            }
+        });
+    };
 };

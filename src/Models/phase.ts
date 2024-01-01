@@ -1,7 +1,7 @@
 import { IIssueShallow } from "./issueShallow";
 
-export interface IIssuePhase {
-    issuePhaseId: string,
+export interface IPhase {
+    phaseId: string,
     name: string,
     issues: IIssueShallow[]
 };

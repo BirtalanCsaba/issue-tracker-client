@@ -1,5 +1,3 @@
-import { IBaseDTO } from "./baseDTO";
-
-export interface IReadIssuePhaseDTO extends IBaseDTO {
+export interface IReadIssuePhaseDTO {
     issuePhaseId: string
 };

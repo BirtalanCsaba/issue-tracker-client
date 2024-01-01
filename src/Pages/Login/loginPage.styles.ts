@@ -12,7 +12,7 @@ export const LoginFormContainerStyle: React.CSSProperties = {
     borderRadius: "20px"
 }
 
-export const EmailContainerStyle: React.CSSProperties = {
+export const UsernameContainerStyle: React.CSSProperties = {
     height: "5vh",
     width: "20vw",
     marginRight: "5vw",
