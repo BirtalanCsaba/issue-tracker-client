@@ -8,6 +8,7 @@ import { IReadIssuePhaseDTO } from "../DTO/readIssuePhase";
 import { IPhase } from "../Models/phase";
 import { url } from "inspector";
 import { GetCurrentUserJWT } from "./functions";
+import { IKanbanShallow } from "./../Models/kanbanShallow";
 
 const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
@@ -62,7 +63,7 @@ export namespace IssuePhasesService {
                 {
                     issueId: '2',
                     title: 'Problem 2'
-            }]
+                }]
         };
         return issuePhase;
     }
@@ -70,12 +71,42 @@ export namespace IssuePhasesService {
 
 export namespace KanbanService {
     export const ReadAllKanbansByCurrentUser = () => {
-        return axios.get(`${BASE_URL}kanban/user/2`, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': `Bearer ${GetCurrentUserJWT()}`
-            }
-        });
+        // return axios.get(`${BASE_URL}kanban/user/2`, {
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*',
+        //         'Authorization': `Bearer ${GetCurrentUserJWT()}`
+        //     }
+        // });
+
+        const kanbans: IKanbanShallow[] = [
+            {
+                kanbanId: '1',
+                title: 'Kanban 1',
+                description: 'das dbansujda bdau dbabdas '
+            },
+            {
+                kanbanId: '2',
+                title: 'Kanban 2',
+                description: 'dsan jdsanujdsa dasbuasd dasbudas '
+            },
+            {
+                kanbanId: '3',
+                title: 'Kanban 3',
+                description: 'gijmri gjrngr grjngr ejdsn jef '
+            },
+            {
+                kanbanId: '4',
+                title: 'Kanban 4',
+                description: 'jfinfer jfrnruenref refnbrubreubgr\ndasdsa daas\ndaasdasasd daas'
+            },
+            {
+                kanbanId: '5',
+                title: 'Kanban 5',
+                description: 'enfifne fbeujebf fejebfujebfuef feberuj '
+            },
+        ]
+
+        return kanbans;
     };
 
     export const ReadKanbanById = (kanbanId: string) => {

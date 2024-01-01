@@ -6,8 +6,14 @@ import { RegisterPage } from "./Pages/Register/registerPage";
 import { IssueItem } from "./Components/IssueItem/issueItem";
 import { PhaseComponent } from "./Components/Phase/phase";
 import { MainPage } from "./Pages/Main/mainPage";
+import { initializeIcons } from "@fluentui/react";
+import React from "react";
 
 export const App = (): JSX.Element => {
+  React.useEffect(() => {
+    initializeIcons();
+  }, []);
+
   const defaultProtectedRouteProps: Omit<IPrivateRouteProps, 'outlet'> = {
     authenticationPath: '/login',
   };
@@ -22,7 +28,7 @@ export const App = (): JSX.Element => {
         <Route path='/' element={isUserAuthenticated() ? <MainPage /> : <LoginPage />} />
         <Route path='login' element={<LoginPage />} />
         <Route path='register' element={<RegisterPage />} />
-        <Route path='issueTrackerApp' element={<PrivateRoute authenticationPath='/login' outlet={<div>app</div>} />} />
+        <Route path='issueTrackerApp' element={<PrivateRoute authenticationPath='/login' outlet={<MainPage />} />} />
         <Route path='issue' element={<IssueItem issueId="dsadsa" />} />
       </Routes>
     </BrowserRouter>

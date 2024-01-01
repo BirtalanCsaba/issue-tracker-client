@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { IRegisterDTO } from "../../DTO/registerDTO";
 import { AuthorizationService } from "../../Utils/services";
 import { FirstNameContainerStyle, LabelStyle, RegisterContainerStyle, RegisterFormContainerStyle, MiddleFieldContainerStyle, RepeatPasswordContainerStyle, ButtonRegisterStyle, ButtonLoginStyle, ErrorMessageStyle } from "./registerPage.styles";
-import Cookies from "js-cookie";
 
 export const RegisterPage = (): JSX.Element => {
     const navigate = useNavigate();

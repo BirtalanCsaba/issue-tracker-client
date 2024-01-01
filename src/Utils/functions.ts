@@ -1,5 +1,6 @@
-import Cookies from "js-cookie"
+// import Cookies from "js-cookie"
 
 export const GetCurrentUserJWT = (): string | undefined => {
-    return Cookies.get("userJWT");
+    // return Cookies.get("userJWT");
+    return 'jwt';
 };

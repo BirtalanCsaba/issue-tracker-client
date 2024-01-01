@@ -1,7 +1,8 @@
-import { Stack } from "@fluentui/react";
+import { Stack, TextField } from "@fluentui/react";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { IKanbanShallowProps } from "./kanbanShallow.types";
+import { containerStyle, descriptionStyle, titleStyle } from "./kanbanShallow.style";
 
 export const KanbanShallow = (props: IKanbanShallowProps): JSX.Element => {
     const navigate = useNavigate();
@@ -10,13 +11,25 @@ export const KanbanShallow = (props: IKanbanShallowProps): JSX.Element => {
         navigate(`/kanban?id=${props.kanbanShallow.kanbanId}`);
     };
 
+    const handleTextFieldClick = (event: any): void => {
+        onClick();
+        event.stopPropagation();
+    };
+
     return (
-        <Stack onClick={onClick}>
-            <div>
+        <Stack style={containerStyle} onClick={onClick}>
+            <div style={titleStyle}>
                 {props.kanbanShallow.title}
             </div>
-            <div>
-                {props.kanbanShallow.description}
+            <div onClick={handleTextFieldClick}>
+                <TextField
+                    styles={descriptionStyle}
+                    value={props.kanbanShallow.description}
+                    borderless={true}
+                    multiline={true}
+                    resizable={false}
+                    disabled={true}
+                />
             </div>
         </Stack>
     );
