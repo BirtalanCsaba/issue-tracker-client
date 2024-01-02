@@ -8,6 +8,7 @@ import { PhaseComponent } from "./Components/Phase/phase";
 import { MainPage } from "./Pages/Main/mainPage";
 import { initializeIcons } from "@fluentui/react";
 import React from "react";
+import { KanbanPage } from "./Pages/Kanban/kanbanPage";
 
 export const App = (): JSX.Element => {
   React.useEffect(() => {
@@ -29,6 +30,7 @@ export const App = (): JSX.Element => {
         <Route path='login' element={<LoginPage />} />
         <Route path='register' element={<RegisterPage />} />
         <Route path='issueTrackerApp' element={<PrivateRoute authenticationPath='/login' outlet={<MainPage />} />} />
+        <Route path='kanban' element={<PrivateRoute authenticationPath='/login' outlet={<KanbanPage />} />} />
         <Route path='issue' element={<IssueItem issueId="dsadsa" />} />
       </Routes>
     </BrowserRouter>

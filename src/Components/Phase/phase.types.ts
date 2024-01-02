@@ -1,5 +1,6 @@
 import { IPhase } from "../../Models/phase";
 
 export interface IPhaseProps {
-    phase: IPhase
+    phase: IPhase,
+    backgroundColor: string
 };

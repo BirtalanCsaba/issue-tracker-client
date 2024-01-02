@@ -28,6 +28,6 @@ export const descriptionStyle: IStyleFunctionOrObject<ITextFieldStyleProps, ITex
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         display: '-webkit-box',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#f9f9f9'
     }
 };

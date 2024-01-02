@@ -1,9 +1,10 @@
-import { DefaultButton, IconButton, Modal, Stack, StackItem, TextField } from "@fluentui/react";
+import { DefaultButton, Icon, IconButton, Modal, Stack, StackItem, TextField } from "@fluentui/react";
 import React from "react";
 import { IKanbanShallow } from "../../Models/kanbanShallow";
 import { KanbanService } from "../../Utils/services";
 import { KanbanShallow } from "../../Components/KanbanShallow/kanbanShallow";
-import { containerStyle, createButtonClassName, menuContainerStyle, modalContainerClassName, titleStyle } from "./mainPage.styles";
+import { createButtonClassName, menuContainerStyle, modalContainerClassName, titleStyle } from "./mainPage.styles";
+import { buttonClassName, iconStyle } from "../Kanban/kanbanPage.styles";
 
 export const MainPage = (): JSX.Element => {
     const [allKanbans, setAllKanbans] = React.useState<IKanbanShallow[]>([]);
@@ -40,17 +41,18 @@ export const MainPage = (): JSX.Element => {
     };
 
     return (
-        <Stack style={containerStyle}>
+        <Stack>
             <div style={titleStyle}>
                 Kanbans that you are part of
             </div>
             <Stack style={menuContainerStyle} horizontal horizontalAlign="end">
-                <IconButton
-                    iconProps={{ iconName: 'Add' }}
-                    title="Create Kanban"
-                    onClick={() => setIsModalOpen(true)}
-                />
-                <span>Create</span>
+                <button className={buttonClassName} onClick={() => { setIsModalOpen(true) }}>
+                    <Icon
+                        iconName="Add"
+                        style={iconStyle}
+                    />
+                    Create Kanban
+                </button>
             </Stack>
             <Modal
                 isOpen={isModalOpen}

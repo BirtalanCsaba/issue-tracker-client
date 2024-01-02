@@ -28,7 +28,7 @@ export const KanbanShallow = (props: IKanbanShallowProps): JSX.Element => {
                     borderless={true}
                     multiline={true}
                     resizable={false}
-                    disabled={true}
+                    readOnly={true}
                 />
             </div>
         </Stack>

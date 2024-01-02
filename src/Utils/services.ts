@@ -9,6 +9,7 @@ import { IPhase } from "../Models/phase";
 import { url } from "inspector";
 import { GetCurrentUserJWT } from "./functions";
 import { IKanbanShallow } from "./../Models/kanbanShallow";
+import { IKanban } from "../Models/kanban";
 
 const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
@@ -110,11 +111,85 @@ export namespace KanbanService {
     };
 
     export const ReadKanbanById = (kanbanId: string) => {
-        return axios.get(`${BASE_URL}kanban/readById/?id=${kanbanId}`, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': `Bearer ${GetCurrentUserJWT()}`
-            }
-        });
+        // return axios.get(`${BASE_URL}kanban/readById/?id=${kanbanId}`, {
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*',
+        //         'Authorization': `Bearer ${GetCurrentUserJWT()}`
+        //     }
+        // });
+
+        const kanban: IKanban = {
+            kanbanId: '1',
+            title: 'Kanban 1',
+            description: 'das dbansujda bdau dbabdas ',
+            phases: [
+                {
+                    phaseId: '1',
+                    name: 'Developing',
+                    issues: [
+                        {
+                            issueId: '1',
+                            title: 'Problem 1'
+                        },
+                        {
+                            issueId: '2',
+                            title: 'Problem 2'
+                        },
+                        {
+                            issueId: '3',
+                            title: 'Problem 3'
+                        }]
+        
+                },
+                {
+                    phaseId: '2',
+                    name: 'Testing',
+                    issues: [
+                        {
+                            issueId: '1',
+                            title: 'Problem 1'
+                        },
+                        {
+                            issueId: '2',
+                            title: 'Problem 2'
+                        }]
+        
+                },
+                {
+                    phaseId: '3',
+                    name: 'Consulting',
+                    issues: [
+                        {
+                            issueId: '1',
+                            title: 'Problem 1'
+                        },
+                        {
+                            issueId: '2',
+                            title: 'Problem 2'
+                        },
+                        {
+                            issueId: '3',
+                            title: 'Problem 3'
+                        }]
+        
+                },
+                {
+                    phaseId: '4',
+                    name: 'Implementing',
+                    issues: [
+                        {
+                            issueId: '1',
+                            title: 'Problem 1'
+                        },
+                        {
+                            issueId: '2',
+                            title: 'Problem 2'
+                        }]
+        
+                }
+            ]
+        }
+
+        return kanban;
     };
 };

@@ -1,10 +1,6 @@
 import { mergeStyles } from "@fluentui/react";
 import React from "react";
 
-export const containerStyle: React.CSSProperties = {
-    // marginTop: '50px'
-};
-
 export const titleStyle: React.CSSProperties = {
     fontSize: '2.5rem',
     color: '#333',
@@ -16,9 +12,7 @@ export const titleStyle: React.CSSProperties = {
 
 export const menuContainerStyle: React.CSSProperties = {
     padding: '10px 20px',
-    backgroundColor: '#f7f7f7',
     borderRadius: '8px',
-    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
