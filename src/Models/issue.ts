@@ -6,5 +6,4 @@ export interface IIsue {
     description: string,
     priority: Priority,
     hoursWorked: number,
-    notes: string
 };

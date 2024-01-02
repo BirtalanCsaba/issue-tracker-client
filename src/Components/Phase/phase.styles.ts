@@ -36,7 +36,8 @@ export const issueContainerClassName: string = mergeStyles({
 export const issueTitleClassName: string = mergeStyles({
     fontSize: '16px',
     fontWeight: 500,
-    color: '#333333'
+    color: '#333333',
+    width: '90%'
 });
 
 export const primaryButtonClassName: string = mergeStyles({
@@ -83,12 +84,22 @@ export const titleStyles: IStyleFunctionOrObject<ITextFieldStyleProps, ITextFiel
     }
 };
 
-export const deleteIconButtonStyle: string = mergeStyles({
+export const deleteIconClassName: string = mergeStyles({
     color: '#FFFFFF',
     backgroundColor: 'inherit',
     selectors: {
         '&:hover': {
             color: '#E0E0E0',
+            backgroundColor: 'inherit'
+        }
+    }
+});
+
+export const itemButtonButtonClassName: string = mergeStyles({
+    marginLeft: '20px',
+    backgroundColor: 'inherit',
+    selectors: {
+        '&:hover': {
             backgroundColor: 'inherit'
         }
     }

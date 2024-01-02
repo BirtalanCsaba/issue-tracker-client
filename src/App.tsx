@@ -11,10 +11,6 @@ import React from "react";
 import { KanbanPage } from "./Pages/Kanban/kanbanPage";
 
 export const App = (): JSX.Element => {
-  React.useEffect(() => {
-    initializeIcons();
-  }, []);
-
   const defaultProtectedRouteProps: Omit<IPrivateRouteProps, 'outlet'> = {
     authenticationPath: '/login',
   };

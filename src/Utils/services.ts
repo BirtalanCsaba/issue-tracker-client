@@ -43,8 +43,7 @@ export namespace IssuesService {
             title: 'Issue',
             description: 'Interesting\nNeed new implementation',
             priority: Priority.Priority3,
-            hoursWorked: 25,
-            notes: 'dsan dsabsua dbash\nhduasbdas dbaybasd bdyasbdas'
+            hoursWorked: 25
         }
         return issue;
     }
