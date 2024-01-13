@@ -9,7 +9,8 @@ export const phaseColors = [
 export const kanbanContainerClassName: string = mergeStyles({
     padding: '20px',
     backgroundColor: '#f4f4f4',
-    minHeight: '100vh'
+    minHeight: '100vh',
+    display: 'inline-block'
 });
 
 export const titleClassName: string = mergeStyles({
@@ -81,5 +82,5 @@ export const buttonClassName: string = mergeStyles({
   };
 
   export const buttonsMenuContainerClassName: string = mergeStyles({
-    marginBottom: '20px'
+    marginBottom: '50px'
   });

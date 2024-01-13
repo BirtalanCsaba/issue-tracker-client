@@ -12,6 +12,7 @@ import { IKanbanShallow } from "./../Models/kanbanShallow";
 import { IKanban } from "../Models/kanban";
 import { ICreateKanbanDTO } from "../DTO/createKanbanDTO";
 import { KanbanRole } from "../Enums/kanbanRole";
+import { IAddPhaseDTO } from "../DTO/addPhaseDTO";
 
 const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
@@ -43,23 +44,13 @@ export namespace IssuesService {
     }
 };
 
-export namespace IssuePhasesService {
-    export const ReadIssuePhase = (readIssuePhaseDTO: IReadIssuePhaseDTO) => {
-        // return axios.post(`${BASE_URL}IssuePhases/read`);
-        const issuePhase: IPhase = {
-            phaseId: 'here',
-            name: 'Testing',
-            issues: [
-                {
-                    issueId: '1',
-                    title: 'Problem 1'
-                },
-                {
-                    issueId: '2',
-                    title: 'Problem 2'
-                }]
-        };
-        return issuePhase;
+export namespace PhasesService {
+    export const AddPhase = (addPhaseDTO: IAddPhaseDTO, kanbanId: number) => {
+        return axios.post(`${BASE_URL}kanban/phase/${kanbanId}`, addPhaseDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
     }
 };
 
@@ -70,126 +61,103 @@ export namespace KanbanService {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`
             }
         });
-
-        // const kanbans: IKanbanShallow[] = [
-        //     {
-        //         kanbanId: '1',
-        //         title: 'Kanban 1',
-        //         description: 'das dbansujda bdau dbabdas '
-        //     },
-        //     {
-        //         kanbanId: '2',
-        //         title: 'Kanban 2',
-        //         description: 'dsan jdsanujdsa dasbuasd dasbudas '
-        //     },
-        //     {
-        //         kanbanId: '3',
-        //         title: 'Kanban 3',
-        //         description: 'gijmri gjrngr grjngr ejdsn jef '
-        //     },
-        //     {
-        //         kanbanId: '4',
-        //         title: 'Kanban 4',
-        //         description: 'jfinfer jfrnruenref refnbrubreubgr\ndasdsa daas\ndaasdasasd daas'
-        //     },
-        //     {
-        //         kanbanId: '5',
-        //         title: 'Kanban 5',
-        //         description: 'enfifne fbeujebf fejebfujebfuef feberuj '
-        //     },
-        // ]
-
-        // return kanbans;
     };
 
-    export const ReadKanbanById = (kanbanId: string) => {
-        // return axios.get(`${BASE_URL}kanban/readById/?id=${kanbanId}`, {
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Authorization': `Bearer ${GetCurrentUserJWT()}`
-        //     }
-        // });
+    export const ReadKanbanById = (kanbanId: number) => {
+        return axios.get(`${BASE_URL}kanban/complete/${kanbanId}`, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
 
-        const kanban: IKanban = {
-            id: 1,
-            title: 'Kanban 1',
-            description: 'das dbansujda bdau dbabdas ',
-            admins: [],
-            participants: [],
-            ownerId: 1,
-            role: KanbanRole.OWNER,
-            phases: [
-                {
-                    phaseId: '1',
-                    name: 'Developing',
-                    issues: [
-                        {
-                            issueId: '1',
-                            title: 'Problem 1'
-                        },
-                        {
-                            issueId: '2',
-                            title: 'Problem 2'
-                        },
-                        {
-                            issueId: '3',
-                            title: 'Problem 3'
-                        }]
+        // const kanban: IKanban = {
+        //     id: 1,
+        //     title: 'Kanban 1',
+        //     description: 'das dbansujda bdau dbabdas ',
+        //     admins: [],
+        //     participants: [],
+        //     ownerId: 1,
+        //     role: KanbanRole.OWNER,
+        //     phases: [
+        //         {
+        //             phaseId: '1',
+        //             name: 'Developing',
+        //             issues: [
+        //                 {
+        //                     issueId: '1',
+        //                     title: 'Problem 1'
+        //                 },
+        //                 {
+        //                     issueId: '2',
+        //                     title: 'Problem 2'
+        //                 },
+        //                 {
+        //                     issueId: '3',
+        //                     title: 'Problem 3'
+        //                 }]
 
-                },
-                {
-                    phaseId: '2',
-                    name: 'Testing',
-                    issues: [
-                        {
-                            issueId: '1',
-                            title: 'Problem 1'
-                        },
-                        {
-                            issueId: '2',
-                            title: 'Problem 2'
-                        }]
+        //         },
+        //         {
+        //             phaseId: '2',
+        //             name: 'Testing',
+        //             issues: [
+        //                 {
+        //                     issueId: '1',
+        //                     title: 'Problem 1'
+        //                 },
+        //                 {
+        //                     issueId: '2',
+        //                     title: 'Problem 2'
+        //                 }]
 
-                },
-                {
-                    phaseId: '3',
-                    name: 'Consulting',
-                    issues: [
-                        {
-                            issueId: '1',
-                            title: 'Problem 1'
-                        },
-                        {
-                            issueId: '2',
-                            title: 'Problem 2'
-                        },
-                        {
-                            issueId: '3',
-                            title: 'Problem 3'
-                        }]
+        //         },
+        //         {
+        //             phaseId: '3',
+        //             name: 'Consulting',
+        //             issues: [
+        //                 {
+        //                     issueId: '1',
+        //                     title: 'Problem 1'
+        //                 },
+        //                 {
+        //                     issueId: '2',
+        //                     title: 'Problem 2'
+        //                 },
+        //                 {
+        //                     issueId: '3',
+        //                     title: 'Problem 3'
+        //                 }]
 
-                },
-                {
-                    phaseId: '4',
-                    name: 'Implementing',
-                    issues: [
-                        {
-                            issueId: '1',
-                            title: 'Problem 1'
-                        },
-                        {
-                            issueId: '2',
-                            title: 'Problem 2'
-                        }]
+        //         },
+        //         {
+        //             phaseId: '4',
+        //             name: 'Implementing',
+        //             issues: [
+        //                 {
+        //                     issueId: '1',
+        //                     title: 'Problem 1'
+        //                 },
+        //                 {
+        //                     issueId: '2',
+        //                     title: 'Problem 2'
+        //                 }]
 
-                }
-            ]
-        }
+        //         }
+        //     ]
+        // }
 
-        return kanban;
+        // return kanban;
     };
 
     export const CreateKanban = (kanbanDTO: ICreateKanbanDTO) => {
+        return axios.post(`${BASE_URL}kanban`, kanbanDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    };
+
+    export const UpdateKanban = (kanbanDTO: ICreateKanbanDTO) => {
         return axios.post(`${BASE_URL}kanban`, kanbanDTO, {
             headers: {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`

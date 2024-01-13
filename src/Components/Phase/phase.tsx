@@ -3,14 +3,14 @@ import React from "react";
 import { IPhaseProps } from "./phase.types";
 import { IReadIssuePhaseDTO } from "../../DTO/readIssuePhase";
 import { IIssueShallow } from "../../Models/issueShallow";
-import { IssuePhasesService } from "../../Utils/services";
+import { PhasesService } from "../../Utils/services";
 import { IPhase } from "../../Models/phase";
 import { deleteIconClassName, issueContainerClassName, issueTitleClassName, itemButtonButtonClassName, listIssueContainerClassName, phaseContainerClassName, primaryButtonClassName, titleStyles, topSectionClassName } from "./phase.styles";
 import { IssueItem } from "../IssueItem/issueItem";
 import { buttonClassName, iconStyle } from "../../Pages/Kanban/kanbanPage.styles";
 
 export const PhaseComponent = (props: IPhaseProps): JSX.Element => {
-    const [name, setName] = React.useState<string>(props.phase.name);
+    const [name, setName] = React.useState<string>(props.phase.title);
     const [issues, setIssues] = React.useState<IIssueShallow[]>(props.phase.issues);
     const [isEditIssueModalOpen, setIsEditIssueModalOpen] = React.useState<boolean>(false);
     const [isCreateIssueModalOpen, setIsCreateIssueModalOpen] = React.useState<boolean>(false);

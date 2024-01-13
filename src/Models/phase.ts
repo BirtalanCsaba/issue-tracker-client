@@ -1,7 +1,8 @@
 import { IIssueShallow } from "./issueShallow";
 
 export interface IPhase {
-    phaseId: string,
-    name: string,
+    id: string,
+    title: string,
+    rank?: string,
     issues: IIssueShallow[]
 };

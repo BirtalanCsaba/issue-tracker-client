@@ -1,6 +1,8 @@
+import { IKanban } from "../../Models/kanban"
+
 export interface IKanbanSettingsModalProps {
-    title: string,
-    description: string,
+    kanban: IKanban,
     isOpen: boolean,
-    onClose: () => void
+    onClose: () => void,
+    onUpdatedKanban: (newKanban: IKanban) => void
 };
