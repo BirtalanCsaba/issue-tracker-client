@@ -2,43 +2,36 @@ import { mergeStyles } from "@fluentui/react";
 import React from "react";
 
 export const titleStyle: React.CSSProperties = {
-    fontSize: '2.5rem',
-    color: '#333',
-    textAlign: 'left',
-    padding: '20px',
-    paddingLeft: '50px',
-    borderBottom: '2px solid #ddd'
+  fontSize: '2.5rem',
+  color: '#333',
+  textAlign: 'left',
+  padding: '20px',
+  paddingLeft: '50px',
+  borderBottom: '2px solid #ddd'
 };
 
 export const menuContainerStyle: React.CSSProperties = {
-    padding: '10px 20px',
-    borderRadius: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
+  margin: '10px 25px 25px',
+  borderRadius: '8px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
 };
 
-export const modalContainerClassName: string = mergeStyles({
-    boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
-    borderRadius: '8px',
-    backgroundColor: '#ffffff',
-    padding: '20px',
-    width: '600px',
-    maxHeight: '80vh',
-    overflowY: 'auto'
-});
-
-export const createButtonClassName: string = mergeStyles({
-    marginTop: '20px',
-    backgroundColor: '#0078d4',
-    color: '#ffffff',
-    border: 'none',
-    borderRadius: '4px',
-    padding: '12px 24px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-    ':hover': {
-      backgroundColor: '#005499',
-      color: '#a0a0a0'
+export const buttonClassName: string = mergeStyles({
+  color: 'white',
+  fontSize: '16px',
+  backgroundColor: '#0078d4',
+  border: 'none',
+  padding: '8px 12px',
+  borderRadius: 4,
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  selectors: {
+    '&:hover': {
+      backgroundColor: '#c4c4c4',
+      color: '#0078d4'
     },
-  });
+  },
+});

@@ -45,8 +45,7 @@ export const RegisterPage = (): JSX.Element => {
         AuthorizationService.RegisterUser(registerDTO)
             .then(function (response) {
                 console.log(response);
-                // Cookies.set("jwtUser", response.data);
-                navigate("/issue");
+                navigate("/login");
             })
             .catch(function (error) {
                 setErrorMessage(error.code)

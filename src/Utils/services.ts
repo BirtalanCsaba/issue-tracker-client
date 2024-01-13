@@ -7,27 +7,21 @@ import { Priority } from "../Enums/priority";
 import { IReadIssuePhaseDTO } from "../DTO/readIssuePhase";
 import { IPhase } from "../Models/phase";
 import { url } from "inspector";
-import { GetCurrentUserJWT } from "./functions";
+import { getCurrentUserJWT } from "./functions";
 import { IKanbanShallow } from "./../Models/kanbanShallow";
 import { IKanban } from "../Models/kanban";
+import { ICreateKanbanDTO } from "../DTO/createKanbanDTO";
+import { KanbanRole } from "../Enums/kanbanRole";
 
 const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
 export namespace AuthorizationService {
     export const LoginUser = (loginDTO: ILoginDTO) => {
-        return axios.post(`${BASE_URL}Authorization/login`, loginDTO);
+        return axios.post(`${BASE_URL}auth/login`, loginDTO);
     };
 
     export const RegisterUser = (registerDTO: IRegisterDTO): Promise<AxiosResponse<any, any>> => {
-        return axios.post(`${BASE_URL}auth/register`, registerDTO, {
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        });
-    };
-
-    export const LogoutUser = (): Promise<AxiosResponse<any, any>> => {
-        return axios.post(`${BASE_URL}Authorization/logout`);
+        return axios.post(`${BASE_URL}auth/register`, registerDTO);
     };
 
     // export const RefreshToken = (dto: IBaseDTO): Promise<AxiosResponse<any, any>> => {
@@ -71,42 +65,41 @@ export namespace IssuePhasesService {
 
 export namespace KanbanService {
     export const ReadAllKanbansByCurrentUser = () => {
-        // return axios.get(`${BASE_URL}kanban/user/2`, {
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Authorization': `Bearer ${GetCurrentUserJWT()}`
-        //     }
-        // });
+        return axios.get(`${BASE_URL}kanban`, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
 
-        const kanbans: IKanbanShallow[] = [
-            {
-                kanbanId: '1',
-                title: 'Kanban 1',
-                description: 'das dbansujda bdau dbabdas '
-            },
-            {
-                kanbanId: '2',
-                title: 'Kanban 2',
-                description: 'dsan jdsanujdsa dasbuasd dasbudas '
-            },
-            {
-                kanbanId: '3',
-                title: 'Kanban 3',
-                description: 'gijmri gjrngr grjngr ejdsn jef '
-            },
-            {
-                kanbanId: '4',
-                title: 'Kanban 4',
-                description: 'jfinfer jfrnruenref refnbrubreubgr\ndasdsa daas\ndaasdasasd daas'
-            },
-            {
-                kanbanId: '5',
-                title: 'Kanban 5',
-                description: 'enfifne fbeujebf fejebfujebfuef feberuj '
-            },
-        ]
+        // const kanbans: IKanbanShallow[] = [
+        //     {
+        //         kanbanId: '1',
+        //         title: 'Kanban 1',
+        //         description: 'das dbansujda bdau dbabdas '
+        //     },
+        //     {
+        //         kanbanId: '2',
+        //         title: 'Kanban 2',
+        //         description: 'dsan jdsanujdsa dasbuasd dasbudas '
+        //     },
+        //     {
+        //         kanbanId: '3',
+        //         title: 'Kanban 3',
+        //         description: 'gijmri gjrngr grjngr ejdsn jef '
+        //     },
+        //     {
+        //         kanbanId: '4',
+        //         title: 'Kanban 4',
+        //         description: 'jfinfer jfrnruenref refnbrubreubgr\ndasdsa daas\ndaasdasasd daas'
+        //     },
+        //     {
+        //         kanbanId: '5',
+        //         title: 'Kanban 5',
+        //         description: 'enfifne fbeujebf fejebfujebfuef feberuj '
+        //     },
+        // ]
 
-        return kanbans;
+        // return kanbans;
     };
 
     export const ReadKanbanById = (kanbanId: string) => {
@@ -118,9 +111,13 @@ export namespace KanbanService {
         // });
 
         const kanban: IKanban = {
-            kanbanId: '1',
+            id: 1,
             title: 'Kanban 1',
             description: 'das dbansujda bdau dbabdas ',
+            admins: [],
+            participants: [],
+            ownerId: 1,
+            role: KanbanRole.OWNER,
             phases: [
                 {
                     phaseId: '1',
@@ -138,7 +135,7 @@ export namespace KanbanService {
                             issueId: '3',
                             title: 'Problem 3'
                         }]
-        
+
                 },
                 {
                     phaseId: '2',
@@ -152,7 +149,7 @@ export namespace KanbanService {
                             issueId: '2',
                             title: 'Problem 2'
                         }]
-        
+
                 },
                 {
                     phaseId: '3',
@@ -170,7 +167,7 @@ export namespace KanbanService {
                             issueId: '3',
                             title: 'Problem 3'
                         }]
-        
+
                 },
                 {
                     phaseId: '4',
@@ -184,11 +181,37 @@ export namespace KanbanService {
                             issueId: '2',
                             title: 'Problem 2'
                         }]
-        
+
                 }
             ]
         }
 
         return kanban;
     };
+
+    export const CreateKanban = (kanbanDTO: ICreateKanbanDTO) => {
+        return axios.post(`${BASE_URL}kanban`, kanbanDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    };
+
+    export const DeleteKanban = (kanbanId: number) => {
+        return axios.delete(`${BASE_URL}kanban/${kanbanId}`, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    };
+};
+
+export namespace UserService {
+    export const ReadAllUsers = () => {
+        return axios.get(`${BASE_URL}user/other`, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    }
 };

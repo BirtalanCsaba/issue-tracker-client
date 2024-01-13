@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ILoginDTO } from "../../DTO/loginDTO";
 import { AuthorizationService } from "../../Utils/services";
 import { ButtonLoginStyle, ButtonRegisterStyle, UsernameContainerStyle, ErrorMessageStyle, LabelStyle, LoginContainerStyle, LoginFormContainerStyle, PasswordContainerStyle } from "./loginPage.styles";
+import { JWTStorageName } from "../../Utils/functions";
 
 export const LoginPage = (): JSX.Element => {
     const navigate = useNavigate();
@@ -26,8 +27,8 @@ export const LoginPage = (): JSX.Element => {
 
         AuthorizationService.LoginUser(loginDTO)
             .then(function (response) {
-                // Cookies.set("jwtUser", response.data);
-                // navigate("/issueTrackerApp");
+                localStorage.setItem(JWTStorageName, response.data.accessToken);
+                navigate("/issueTrackerApp");
             })
             .catch(function (error) {
                 setErrorMessage(error.response.data.message)
