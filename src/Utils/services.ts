@@ -1,18 +1,14 @@
 import axios, { AxiosResponse } from "axios";
-import { ILoginDTO } from "../DTO/loginDTO";
-import { IRegisterDTO } from "../DTO/registerDTO";
-import { IReadIssueDTO } from "../DTO/readIssueDTO";
-import { IIsue } from "../Models/issue";
-import { Priority } from "../Enums/priority";
-import { IReadIssuePhaseDTO } from "../DTO/readIssuePhase";
-import { IPhase } from "../Models/phase";
-import { url } from "inspector";
-import { getCurrentUserJWT } from "./functions";
-import { IKanbanShallow } from "./../Models/kanbanShallow";
-import { IKanban } from "../Models/kanban";
-import { ICreateKanbanDTO } from "../DTO/createKanbanDTO";
-import { KanbanRole } from "../Enums/kanbanRole";
 import { IAddPhaseDTO } from "../DTO/addPhaseDTO";
+import { ICreateKanbanDTO } from "../DTO/createKanbanDTO";
+import { ILoginDTO } from "../DTO/loginDTO";
+import { IReadIssueDTO } from "../DTO/readIssueDTO";
+import { IRegisterDTO } from "../DTO/registerDTO";
+import { Priority } from "../Enums/priority";
+import { IIssue } from "../Models/issue";
+import { getCurrentUserJWT } from "./functions";
+import { ICreateIssueDTO } from "../DTO/createIssueDTO";
+import { IUpdateIssueDTO } from "../DTO/updateIssueDTO";
 
 const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
@@ -24,29 +20,45 @@ export namespace AuthorizationService {
     export const RegisterUser = (registerDTO: IRegisterDTO): Promise<AxiosResponse<any, any>> => {
         return axios.post(`${BASE_URL}auth/register`, registerDTO);
     };
-
-    // export const RefreshToken = (dto: IBaseDTO): Promise<AxiosResponse<any, any>> => {
-    //     return axios.post(`${BASE_URL}Authorization/refreshToken`, dto);
-    // }
 };
 
 export namespace IssuesService {
-    export const ReadIssue = (readIssueDTO: IReadIssueDTO) => {
-        // return axios.post(`${BASE_URL}Issues/read`);
-        const issue: IIsue = {
-            issueId: 'here',
-            title: 'Issue',
-            description: 'Interesting\nNeed new implementation',
-            priority: Priority.Priority3,
-            hoursWorked: 25
-        }
-        return issue;
+    export const CreateIssue = (createIssueDTO: ICreateIssueDTO) => {
+        return axios.post(`${BASE_URL}kanban/issue`, createIssueDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    }
+
+    export const UpdateIssue = (updateIssueDTO: IUpdateIssueDTO) => {
+        return axios.put(`${BASE_URL}kanban/issue`, updateIssueDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    }
+
+    export const DeleteIssue = (issueId: number) => {
+        return axios.delete(`${BASE_URL}kanban/issue/${issueId}`, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
     }
 };
 
 export namespace PhasesService {
     export const AddPhase = (addPhaseDTO: IAddPhaseDTO, kanbanId: number) => {
-        return axios.post(`${BASE_URL}kanban/phase/${kanbanId}`, addPhaseDTO, {
+        return axios.post(`${BASE_URL}kanban/${kanbanId}/phase`, addPhaseDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    }
+
+    export const DeletePhase = (phaseId: number) => {
+        return axios.delete(`${BASE_URL}kanban/phase/${phaseId}`, {
             headers: {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`
             }
@@ -69,84 +81,6 @@ export namespace KanbanService {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`
             }
         });
-
-        // const kanban: IKanban = {
-        //     id: 1,
-        //     title: 'Kanban 1',
-        //     description: 'das dbansujda bdau dbabdas ',
-        //     admins: [],
-        //     participants: [],
-        //     ownerId: 1,
-        //     role: KanbanRole.OWNER,
-        //     phases: [
-        //         {
-        //             phaseId: '1',
-        //             name: 'Developing',
-        //             issues: [
-        //                 {
-        //                     issueId: '1',
-        //                     title: 'Problem 1'
-        //                 },
-        //                 {
-        //                     issueId: '2',
-        //                     title: 'Problem 2'
-        //                 },
-        //                 {
-        //                     issueId: '3',
-        //                     title: 'Problem 3'
-        //                 }]
-
-        //         },
-        //         {
-        //             phaseId: '2',
-        //             name: 'Testing',
-        //             issues: [
-        //                 {
-        //                     issueId: '1',
-        //                     title: 'Problem 1'
-        //                 },
-        //                 {
-        //                     issueId: '2',
-        //                     title: 'Problem 2'
-        //                 }]
-
-        //         },
-        //         {
-        //             phaseId: '3',
-        //             name: 'Consulting',
-        //             issues: [
-        //                 {
-        //                     issueId: '1',
-        //                     title: 'Problem 1'
-        //                 },
-        //                 {
-        //                     issueId: '2',
-        //                     title: 'Problem 2'
-        //                 },
-        //                 {
-        //                     issueId: '3',
-        //                     title: 'Problem 3'
-        //                 }]
-
-        //         },
-        //         {
-        //             phaseId: '4',
-        //             name: 'Implementing',
-        //             issues: [
-        //                 {
-        //                     issueId: '1',
-        //                     title: 'Problem 1'
-        //                 },
-        //                 {
-        //                     issueId: '2',
-        //                     title: 'Problem 2'
-        //                 }]
-
-        //         }
-        //     ]
-        // }
-
-        // return kanban;
     };
 
     export const CreateKanban = (kanbanDTO: ICreateKanbanDTO) => {
@@ -158,7 +92,7 @@ export namespace KanbanService {
     };
 
     export const UpdateKanban = (kanbanDTO: ICreateKanbanDTO) => {
-        return axios.post(`${BASE_URL}kanban`, kanbanDTO, {
+        return axios.put(`${BASE_URL}kanban`, kanbanDTO, {
             headers: {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`
             }
@@ -177,6 +111,14 @@ export namespace KanbanService {
 export namespace UserService {
     export const ReadAllUsers = () => {
         return axios.get(`${BASE_URL}user/other`, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    }
+
+    export const GetUserInfo = () => {
+        return axios.get(`${BASE_URL}user/userId`, {
             headers: {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`
             }

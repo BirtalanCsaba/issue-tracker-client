@@ -1,4 +1,4 @@
 export interface IIssueShallow {
-    issueId: string,
+    id: string,
     title: string
 };

@@ -27,7 +27,6 @@ export const App = (): JSX.Element => {
         <Route path='register' element={<RegisterPage />} />
         <Route path='issueTrackerApp' element={<PrivateRoute authenticationPath='/login' outlet={<MainPage />} />} />
         <Route path='kanban' element={<PrivateRoute authenticationPath='/login' outlet={<KanbanPage />} />} />
-        <Route path='issue' element={<IssueItem issueId="dsadsa" />} />
       </Routes>
     </BrowserRouter>
   );

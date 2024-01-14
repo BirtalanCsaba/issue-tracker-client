@@ -1,3 +1,10 @@
+import { IIssue } from "../../Models/issue";
+import { IUser } from "../../Models/user";
+
 export interface IIssueItemProps {
-    issueId: string;
+    phaseId: number,
+    issueId: number,
+    kanbanUsers: IUser[],
+    issue?: IIssue,
+    onSavedIssue: (newIssue: IIssue) => void
 };

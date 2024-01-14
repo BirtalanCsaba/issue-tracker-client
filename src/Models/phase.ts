@@ -1,8 +1,8 @@
-import { IIssueShallow } from "./issueShallow";
+import { IIssue } from "./issue";
 
 export interface IPhase {
-    id: string,
+    id: number,
     title: string,
-    rank?: string,
-    issues: IIssueShallow[]
+    rank: string,
+    issue: IIssue[]
 };

@@ -6,9 +6,8 @@ export interface IKanban{
     id: number,
     title: string,
     description: string,
-    ownerId: number,
-    role: KanbanRole
-    phases: IPhase[],
+    owner: IUser,
+    phase: IPhase[],
     admins: IUser[],
     participants: IUser[]
 };

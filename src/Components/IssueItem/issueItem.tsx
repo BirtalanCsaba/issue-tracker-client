@@ -1,46 +1,43 @@
-import { Dropdown, IDropdownOption, ISelectableOption, Icon, Stack, TextField } from "@fluentui/react";
+import { DatePicker, Dropdown, IDropdownOption, ISelectableOption, Icon, Stack, TextField } from "@fluentui/react";
 import React from "react";
+import Avatar from "react-avatar";
 import { IReadIssueDTO } from "../../DTO/readIssueDTO";
 import { Priority } from "../../Enums/priority";
-import { IIsue } from "../../Models/issue";
+import { IIssue } from "../../Models/issue";
+import { IUser } from "../../Models/user";
 import { buttonClassName, iconStyle } from "../../Pages/Kanban/kanbanPage.styles";
+import { getColorByFullName, getFullNameUser, getInitialsFromUser } from "../../Utils/functions";
 import { IssuesService } from "../../Utils/services";
-import { descriptionTextStyles, dropdownPriorityClassName, headerSectionClassName, modalContainerClassName, textFieldHoursWorkedStyles, titleInputStyles } from "./issueItem.styles";
+import { datePickerClassName, descriptionTextStyles, dropdownPriorityClassName, headerSectionClassName, modalContainerClassName, titleInputStyles } from "./issueItem.styles";
 import { IIssueItemProps } from "./issueItem.types";
-import Avatar from "react-avatar";
-import { getColorByFullName } from "../../Utils/functions";
+import { ICreateIssueDTO } from "../../DTO/createIssueDTO";
+import { IUpdateIssueDTO } from "../../DTO/updateIssueDTO";
 
 export const IssueItem = (props: IIssueItemProps): JSX.Element => {
     const [title, setTitle] = React.useState<string>('');
     const [description, setDescription] = React.useState<string>('');
-    const [hoursWorked, setHoursWorked] = React.useState<number>(0);
     const [priority, setPriority] = React.useState<Priority>(Priority.Priority3);
+    const [allUsers, setAllUsers] = React.useState<IUser[]>(props.kanbanUsers);
+    const [selectedContributor, setSelectedContributor] = React.useState<number>(-1);
+    const [expectedDeadline, setExpectedDeadline] = React.useState<Date>(new Date());
 
     React.useEffect(() => {
-        const readIssueDTO: IReadIssueDTO = {
-            issueId: props.issueId
-        };
-
-        // IssuesService.ReadIssue(readIssueDTO)
-        //     .then(function (response) {
-        //         setTitle(response.data.title);
-        //         setDescription(response.data.description);
-        //         setHoursWorked(response.data.hoursWorked);
-        //         setPriority(response.data.priority);
-        //         setNotes(response.data.notes);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     })
-
-        if (props.issueId !== '') {
-            const issue: IIsue = IssuesService.ReadIssue(readIssueDTO);
-            setTitle(issue.title);
-            setDescription(issue.description);
-            setHoursWorked(issue.hoursWorked);
-            setPriority(issue.priority);
+        if (props.issueId === -1) {
+            setTitle('');
+            setDescription('');
+            setPriority(Priority.Priority3);
+            setSelectedContributor(-1);
+            setExpectedDeadline(new Date());
         }
-    }, []);
+
+        if (props.issueId !== -1 && props.issue !== undefined) {
+            setTitle(props.issue.title);
+            setDescription(props.issue.description);
+            setPriority(props.issue.priority);
+            setSelectedContributor(props.issue.assignedUser);
+            setExpectedDeadline(new Date(props.issue.expectedDeadline));
+        }
+    }, [props.issueId, props.issue]);
 
     const getDropdownOptionKey = (priority: Priority): string => {
         return `key_priority_${priority}`;
@@ -57,28 +54,30 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
         }
     };
 
-    const peopleList: { id: number; firstName: string; lastName: string; color: string }[] = [
-        { id: 1, firstName: 'John', lastName: 'Doe', color: '#FF4500' },
-        { id: 2, firstName: 'Jane', lastName: 'Smith', color: '#0078d4' },
-        { id: 3, firstName: 'Alex', lastName: 'Smith', color: '#FF4500' },
-        { id: 4, firstName: 'June', lastName: 'Carter', color: '#0078d4' },
-        { id: 5, firstName: 'Joe', lastName: 'Holder', color: '#FF4500' },
-        { id: 6, firstName: 'Tom', lastName: 'Shelby', color: '#0078d4' },
-    ];
+    const dropdownOptions: IDropdownOption[] = React.useMemo(() => {
+        return allUsers.map((user) => ({
+            key: user.id,
+            text: getFullNameUser(user),
+            data: getInitialsFromUser(user)
+        }))
+    }, [allUsers]);
 
-    const getInitialsFromPerson = (person: any): string => {
-        return `${person.firstName.charAt(0)} ${person.lastName.charAt(0)}`;
+    const renderSelectedTitle = (options: IDropdownOption[] | undefined): JSX.Element => {
+        if (options === undefined)
+            return <div></div>
+
+        const selectedPeople: IUser[] = options.map(option => allUsers.find(p => p.id === option.key) as IUser);
+        return (
+            <div>
+                {selectedPeople.map((person, index) => (
+                    <span key={person?.id} style={{ marginRight: index < selectedPeople.length - 1 ? '8px' : '0' }}>
+                        <Avatar style={{ marginRight: '5px' }} name={getInitialsFromUser(person)} round={true} size="30px" color={getColorByFullName(getFullNameUser(person))} />
+                        {getFullNameUser(person)}
+                    </span>
+                ))}
+            </div>
+        );
     };
-
-    const getFullNamePerson = (person: any): string => {
-        return `${person.firstName} ${person.lastName}`;
-    };
-
-    const dropdownOptions: IDropdownOption[] = peopleList.map((person) => ({
-        key: person.id.toString(),
-        text: getFullNamePerson(person),
-        data: getInitialsFromPerson(person)
-    }));
 
     const renderOption = (option: ISelectableOption | undefined): JSX.Element => {
         return (
@@ -91,22 +90,61 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
         );
     };
 
-    const renderSelectedTitle = (options: IDropdownOption[] | undefined): JSX.Element => {
-        if (options === undefined)
-            return <div></div>
+    const handleAssignedUserChange = (item: IDropdownOption | any): void => {
+        setSelectedContributor(item.key);
+    };
 
-        const selectedPeople = options.map(option => peopleList.find(p => p.id.toString() === option.key));
-        return (
-            <div>
-                {selectedPeople.slice(0, 3).map((person, index) => (
-                    <span key={person?.id} style={{ marginRight: index < selectedPeople.length - 1 ? '8px' : '0' }}>
-                        <Avatar style={{marginRight: '5px'}} name={getInitialsFromPerson(person)} round={true} size="30px" color={getColorByFullName(getFullNamePerson(person))} />
-                        {getFullNamePerson(person)}
-                    </span>
-                ))}
-                {selectedPeople.length > 3 && "..."}
-            </div>
-        );
+    const handleOnEstimatedDeadlineChange = (date: Date | null | undefined): void => {
+        if (date === null || date === undefined)
+            return;
+        setExpectedDeadline(date);
+    };
+
+    const handleCreateIssue = (): void => {
+        const newIssue: ICreateIssueDTO = {
+            title: title,
+            description: description,
+            priority: parseInt(priority),
+            expectedDeadline: expectedDeadline,
+            assignedUser: selectedContributor === -1 ? null : selectedContributor,
+            phaseId: props.phaseId
+        };
+
+        IssuesService.CreateIssue(newIssue)
+            .then((function (response) {
+                props.onSavedIssue(response.data);
+            }))
+            .catch(function (error) {
+                console.log(error)
+            });
+    };
+
+    const handleUpdateIssue = (): void => {
+        const updatedIssue: IUpdateIssueDTO = {
+            id: props.issueId,
+            title: title,
+            description: description,
+            priority: parseInt(priority),
+            expectedDeadline: expectedDeadline,
+            assignedUser: selectedContributor === -1 ? null : selectedContributor,
+            phaseId: props.phaseId
+        };
+
+        IssuesService.UpdateIssue(updatedIssue)
+            .then((function (response) {
+                props.onSavedIssue(response.data);
+            }))
+            .catch(function (error) {
+                console.log(error)
+            });
+    };
+
+    const handleSaveIssue = (): void => {
+        if (props.issueId === -1)
+            handleCreateIssue();
+
+        else
+            handleUpdateIssue();
     };
 
     return (
@@ -120,7 +158,7 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
                     styles={titleInputStyles}
                     placeholder="Title for new issue"
                 />
-                <button className={buttonClassName}>
+                <button className={buttonClassName} onClick={handleSaveIssue}>
                     <Icon
                         iconName="Save"
                         style={iconStyle}
@@ -135,9 +173,10 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
                         options={dropdownOptions}
                         onRenderOption={renderOption}
                         onRenderTitle={renderSelectedTitle}
+                        onChange={(event, option) => handleAssignedUserChange(option)}
                         style={{ marginBottom: '25px' }}
-                        multiSelect={true}
-                        styles={{title: {height: '35px', width: '400px'}}}
+                        selectedKey={selectedContributor === -1 ? undefined : selectedContributor}
+                        styles={{ title: { height: '35px', width: '400px' } }}
                     />
                     <TextField
                         type="text"
@@ -148,7 +187,7 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
                         placeholder="Description"
                     />
                 </Stack>
-                <Stack horizontalAlign="end">
+                <Stack>
                     <Dropdown
                         placeholder="Select Priority"
                         label="Priority"
@@ -158,13 +197,11 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
                         defaultSelectedKey={getDropdownOptionKey(priority)}
                         className={dropdownPriorityClassName}
                     />
-                    <TextField
-                        type="number"
-                        multiline={false}
-                        value={hoursWorked.toString()}
-                        label="Hours Worked"
-                        onChange={(event, newValue?: string) => newValue && setHoursWorked(parseInt(newValue))}
-                        styles={textFieldHoursWorkedStyles}
+                    <DatePicker
+                        label="Expected Deadline"
+                        className={datePickerClassName}
+                        value={expectedDeadline}
+                        onSelectDate={handleOnEstimatedDeadlineChange}
                     />
                 </Stack>
             </Stack>

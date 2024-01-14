@@ -10,6 +10,7 @@ export const kanbanContainerClassName: string = mergeStyles({
     padding: '20px',
     backgroundColor: '#f4f4f4',
     minHeight: '100vh',
+    minWidth: '100vw',
     display: 'inline-block'
 });
 

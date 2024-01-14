@@ -15,7 +15,9 @@ export const AddPhaseModal = (props: IAddPhaseModalProps): JSX.Element => {
 
         PhasesService.AddPhase(phaseDTO, props.kanbanId)
         .then(function (response) {
-            props.onAddedPhase(response.data);
+            const newPhase: any = response.data;
+            newPhase.issue = [];
+            props.onAddedPhase(newPhase);
         })
         .catch(function (error) {
             console.log(error);

@@ -66,3 +66,7 @@ export const textFieldHoursWorkedStyles:  IStyleFunctionOrObject<ITextFieldStyle
         width: '200px'
     }
 };
+
+export const datePickerClassName: string = mergeStyles({
+    marginTop: '15px'
+})

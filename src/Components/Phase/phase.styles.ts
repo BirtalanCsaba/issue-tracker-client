@@ -95,7 +95,7 @@ export const deleteIconClassName: string = mergeStyles({
     }
 });
 
-export const itemButtonButtonClassName: string = mergeStyles({
+export const itemButtonClassName: string = mergeStyles({
     marginLeft: '20px',
     backgroundColor: 'inherit',
     selectors: {

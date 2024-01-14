@@ -1,9 +1,10 @@
 import { Priority } from "../Enums/priority";
 
-export interface IIsue {
-    issueId: string,
+export interface IIssue {
+    id: number,
     title: string,
     description: string,
     priority: Priority,
-    hoursWorked: number,
+    assignedUser: number,
+    expectedDeadline: Date
 };

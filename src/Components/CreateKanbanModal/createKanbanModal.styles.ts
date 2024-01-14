@@ -27,7 +27,7 @@ export const createButtonClassName: string = mergeStyles({
 
 export const dropdownStyles: IStyleFunctionOrObject<IDropdownStyleProps, IDropdownStyles> = {
     root: {
-        marginTop: '25px',
+        marginTop: '20px',
         width: '400px'
     },
     title: {

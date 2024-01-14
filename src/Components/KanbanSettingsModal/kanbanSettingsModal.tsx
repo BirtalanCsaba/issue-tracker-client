@@ -7,6 +7,7 @@ import { UserService } from "../../Utils/services";
 import { ErrorMessageStyle, createButtonClassName, dropdownStyles } from "../CreateKanbanModal/createKanbanModal.styles";
 import Avatar from "react-avatar";
 import { getColorByFullName, getFullNameUser, getInitialsFromUser } from "../../Utils/functions";
+import { KanbanRole } from "../../Enums/kanbanRole";
 
 export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Element => {
   const [title, setTitle] = React.useState<string>(props.kanban.title);
@@ -119,6 +120,21 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
     );
   };
 
+  const getOwner = () => {
+    const fullName: string = getFullNameUser(props.kanban.owner);
+    return (
+      <Stack horizontal style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
+        <Label>
+          Owner :
+        </Label>
+        <Avatar style={{ marginLeft: '10px' }} name={getInitialsFromUser(props.kanban.owner)} round={true} size="30px" color={getColorByFullName(fullName)} />
+        <div style={{ marginLeft: '10px' }}>
+          {fullName}
+        </div>
+      </Stack>
+    )
+  }
+
   const handleDropdownAdminsChange = (item: IDropdownOption | any): void => {
     const indexOption: number = selectedAdmins.findIndex((admin) => admin.id === item.key);
     const newSelectedAdmins: IUser[] = [...selectedAdmins];
@@ -172,7 +188,14 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
             label="Title"
             value={title}
             onChange={(event, newValue) => setTitle(newValue || '')}
+            readOnly={props.userRole === KanbanRole.PARTICIPANT}
           />
+          <Label style={{ marginTop: '20px' }}>
+            Your Role: {props.userRole}
+          </Label>
+          {props.userRole !== KanbanRole.OWNER &&
+            getOwner()
+          }
           <Dropdown
             placeholder="Select users"
             label="Admins"
@@ -182,7 +205,8 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
             defaultSelectedKeys={selectedAdmins.map((admin: IUser) => admin.id)}
             multiSelect={true}
             styles={dropdownStyles}
-          onChange={(event, option) => handleDropdownAdminsChange(option)}
+            onChange={(event, option) => handleDropdownAdminsChange(option)}
+            disabled={props.userRole !== KanbanRole.OWNER}
           />
           <Dropdown
             placeholder="Select users"
@@ -194,7 +218,8 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
             style={{ marginBottom: '25px' }}
             multiSelect={true}
             styles={dropdownStyles}
-          onChange={(event, option) => handleDropdownParticipantsChange(option)}
+            onChange={(event, option) => handleDropdownParticipantsChange(option)}
+            disabled={props.userRole === KanbanRole.PARTICIPANT}
           />
           <TextField
             label="Description"
@@ -202,8 +227,11 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
             value={description}
             onChange={(event, newValue) => setDescription(newValue || '')}
             styles={{ field: { height: '150px' } }}
+            readOnly={props.userRole === KanbanRole.PARTICIPANT}
           />
-          <DefaultButton className={createButtonClassName} onClick={handleSaveKanban} text="Save" />
+          {props.userRole !== KanbanRole.PARTICIPANT &&
+            <DefaultButton className={createButtonClassName} onClick={handleSaveKanban} text="Save" />
+          }
         </Stack>
       }
     </Modal>
