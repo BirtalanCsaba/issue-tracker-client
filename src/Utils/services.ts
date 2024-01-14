@@ -9,6 +9,8 @@ import { IIssue } from "../Models/issue";
 import { getCurrentUserJWT } from "./functions";
 import { ICreateIssueDTO } from "../DTO/createIssueDTO";
 import { IUpdateIssueDTO } from "../DTO/updateIssueDTO";
+import { IInsertPhaseDTO } from "../DTO/insertPhaseDTO";
+import { IAddExtremityPhaseDTO } from "../DTO/addExtremetyPhaseDTO";
 
 const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
@@ -55,7 +57,7 @@ export namespace PhasesService {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`
             }
         });
-    }
+    };
 
     export const DeletePhase = (phaseId: number) => {
         return axios.delete(`${BASE_URL}kanban/phase/${phaseId}`, {
@@ -63,7 +65,31 @@ export namespace PhasesService {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`
             }
         });
-    }
+    };
+
+    export const InsertPhase = (insertPhaseDTO: IInsertPhaseDTO) => {
+        return axios.post(`${BASE_URL}kanban/phase/insert`, insertPhaseDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    };
+
+    export const AddFirstPhase = (addPhaseDTO: IAddExtremityPhaseDTO) => {
+        return axios.post(`${BASE_URL}kanban/phase/addFirst`, addPhaseDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    };
+
+    export const AddLastPhase = (addPhaseDTO: IAddExtremityPhaseDTO) => {
+        return axios.post(`${BASE_URL}kanban/phase/addLast`, addPhaseDTO, {
+            headers: {
+                'Authorization': `Bearer ${getCurrentUserJWT()}`
+            }
+        });
+    };
 };
 
 export namespace KanbanService {
