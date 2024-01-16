@@ -7,7 +7,7 @@ import { KanbanRole } from "../../Enums/kanbanRole";
 import { IKanban } from "../../Models/kanban";
 import { IPhase } from "../../Models/phase";
 import { IUser } from "../../Models/user";
-import { compareStringsLexicographically, getFullNameUser } from "../../Utils/functions";
+import { comparePhases, getFullNameUser } from "../../Utils/functions";
 import { KanbanService, PhasesService, UserService } from "../../Utils/services";
 import { buttonClassName, buttonsMenuContainerClassName, iconStyle, kanbanContainerClassName, phaseColors, phaseItemClassName, titleClassName } from "./kanbanPage.styles";
 import { IAddExtremityPhaseDTO } from "../../DTO/addExtremetyPhaseDTO";
@@ -27,7 +27,7 @@ export const KanbanPage = (): JSX.Element => {
             .then(function (response) {
                 setKanban(response.data);
                 let initialPhases: IPhase[] = [...response.data.phase];
-                initialPhases = initialPhases.sort((phase1: IPhase, phase2: IPhase) => compareStringsLexicographically(phase1.rank, phase2.rank));
+                initialPhases = initialPhases.sort(comparePhases);
                 setPhases(initialPhases);
                 UserService.GetUserInfo()
                     .then(function (response) {
@@ -88,7 +88,7 @@ export const KanbanPage = (): JSX.Element => {
 
     const onAddedPhase = (newPhase: IPhase): void => {
         let newPhases: IPhase[] = [...phases, newPhase];
-        newPhases = newPhases.sort((phase1: IPhase, phase2: IPhase) => compareStringsLexicographically(phase1.rank, phase2.rank));
+        newPhases = newPhases.sort(comparePhases);
         setPhases(newPhases);
         window.location.reload();
     };

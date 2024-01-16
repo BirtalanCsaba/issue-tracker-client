@@ -12,7 +12,6 @@ import { KanbanRole } from "../../Enums/kanbanRole";
 import { IIssue } from "../../Models/issue";
 
 export const PhaseComponent = (props: IPhaseProps): JSX.Element => {
-    const [name, setName] = React.useState<string>(props.phase.title);
     const [issues, setIssues] = React.useState<IIssue[]>(props.phase.issue.sort(
         (issue1: IIssue, issue2: IIssue) => parseInt(issue1.priority) - parseInt(issue2.priority)));
     const [isIssueModalOpen, setIsIssueModalOpen] = React.useState<boolean>(false);
@@ -78,17 +77,10 @@ export const PhaseComponent = (props: IPhaseProps): JSX.Element => {
                 <TextField
                     type="text"
                     multiline={false}
-                    value={name}
-                    onChange={(event, newValue?: string) => newValue && setName(newValue)}
+                    value={props.phase.title}
+                    readOnly={true}
                     styles={titleStyles}
                 />
-                <button className={primaryButtonClassName}>
-                    <Icon
-                        iconName="Save"
-                        style={iconStyle}
-                    />
-                    Save
-                </button>
                 {props.userRole !== KanbanRole.PARTICIPANT &&
                     <IconButton
                         iconProps={{ iconName: 'Delete', style: { marginLeft: '15px', fontSize: '20px' } }}

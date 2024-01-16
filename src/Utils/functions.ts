@@ -1,3 +1,4 @@
+import { IPhase } from "../Models/phase";
 import { IUser } from "../Models/user";
 
 export const JWTStorageName: string = "jwtUser";
@@ -22,25 +23,6 @@ export const getFullNameUser = (user: IUser): string => {
     return `${user.firstName} ${user.lastName}`;
 };
 
-export const compareStringsLexicographically = (str1: string, str2: string): number => {
-    const minLength = Math.min(str1.length, str2.length);
-
-    for (let i = 0; i < minLength; i++) {
-        const charCode1 = str1.charCodeAt(i);
-        const charCode2 = str2.charCodeAt(i);
-
-        if (charCode1 < charCode2) {
-            return -1;
-        } else if (charCode1 > charCode2) {
-            return 1;
-        }
-    }
-
-    if (str1.length < str2.length) {
-        return -1;
-    } else if (str1.length > str2.length) {
-        return 1;
-    }
-
-    return 0;
+export const comparePhases = (phase1: IPhase, phase2: IPhase): number => {
+    return phase1.rank < phase2.rank ? -1 : phase1.rank === phase2.rank ? 0 : 1;
 };
