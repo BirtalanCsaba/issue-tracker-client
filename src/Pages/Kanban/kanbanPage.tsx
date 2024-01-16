@@ -91,7 +91,6 @@ export const KanbanPage = (): JSX.Element => {
 
     const onAddedPhase = (newPhase: IPhase): void => {
         let newPhases: IPhase[] = [...phases, newPhase];
-        newPhases = newPhases.sort(comparePhases);
         setPhases(newPhases);
         window.location.reload();
     };
