@@ -9,16 +9,9 @@ import { MainPage } from "./Pages/Main/mainPage";
 import { initializeIcons } from "@fluentui/react";
 import React from "react";
 import { KanbanPage } from "./Pages/Kanban/kanbanPage";
+import { isUserAuthenticated } from "./Utils/functions";
 
 export const App = (): JSX.Element => {
-  const defaultProtectedRouteProps: Omit<IPrivateRouteProps, 'outlet'> = {
-    authenticationPath: '/login',
-  };
-
-  const isUserAuthenticated = (): boolean => {
-    return false;
-  };
-
   return (
     <BrowserRouter>
       <Routes>

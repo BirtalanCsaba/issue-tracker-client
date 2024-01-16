@@ -26,3 +26,7 @@ export const getFullNameUser = (user: IUser): string => {
 export const comparePhases = (phase1: IPhase, phase2: IPhase): number => {
     return phase1.rank < phase2.rank ? -1 : phase1.rank === phase2.rank ? 0 : 1;
 };
+
+export const isUserAuthenticated = (): boolean => {
+    return localStorage.getItem(JWTStorageName) != null && localStorage.getItem(JWTStorageName) != undefined;
+};
