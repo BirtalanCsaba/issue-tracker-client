@@ -121,7 +121,7 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
 
     const handleUpdateIssue = (): void => {
         const updatedIssue: IUpdateIssueDTO = {
-            id: props.issueId,
+            issueId: props.issueId,
             title: title,
             description: description,
             priority: parseInt(priority),
@@ -132,7 +132,14 @@ export const IssueItem = (props: IIssueItemProps): JSX.Element => {
 
         IssuesService.UpdateIssue(updatedIssue)
             .then((function (response) {
-                props.onSavedIssue(response.data);
+                props.onSavedIssue({
+                    id: props.issueId,
+                    title: title,
+                    description: description,
+                    priority: priority,
+                    expectedDeadline: expectedDeadline,
+                    assignedUser: selectedContributor,
+                });
             }))
             .catch(function (error) {
                 console.log(error)

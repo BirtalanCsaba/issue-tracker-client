@@ -19,13 +19,17 @@ export const PhaseComponent = (props: IPhaseProps): JSX.Element => {
     const [currentIssueId, setCurrentIssueId] = React.useState<number>(-1);
 
     const handleDeletePhase = (): void => {
-        PhasesService.DeletePhase(props.phase.id)
-            .then(function (response) {
-                props.onDeletePhase(props.phase.id)
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
+        const userConfirmed: boolean = window.confirm('Are you sure you want to delete this phase?');
+
+        if (userConfirmed) {
+            PhasesService.DeletePhase(props.phase.id)
+                .then(function (response) {
+                    props.onDeletePhase(props.phase.id)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        }
     };
 
     const onCreatedIssue = (newIssue: IIssue) => {
@@ -40,7 +44,7 @@ export const PhaseComponent = (props: IPhaseProps): JSX.Element => {
             return;
 
         let newIssues: IIssue[] = [...issues];
-        newIssues[issueIndex] = {...updatedIssue};
+        newIssues[issueIndex] = { ...updatedIssue };
         newIssues = newIssues.sort(
             (issue1: IIssue, issue2: IIssue) => parseInt(issue1.priority) - parseInt(issue2.priority));
         setIssues(newIssues);
@@ -122,7 +126,7 @@ export const PhaseComponent = (props: IPhaseProps): JSX.Element => {
                     issueId={currentIssueId}
                     phaseId={props.phase.id}
                     kanbanUsers={props.kanbanUsers}
-                    onSavedIssue={currentIssueId === -1 ? onCreatedIssue: onUpdatedIssue}
+                    onSavedIssue={currentIssueId === -1 ? onCreatedIssue : onUpdatedIssue}
                     issue={currentIssueId === -1 ? undefined : issues.find((issue: IIssue) => issue.id === currentIssueId)}
                 />
             </Modal>
