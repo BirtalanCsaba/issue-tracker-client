@@ -205,7 +205,7 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
             getOwner()
           }
           <Dropdown
-            placeholder="Select users"
+            placeholder={props.userRole === KanbanRole.OWNER ? "Select users" : ''}
             label="Admins"
             options={dropdownOptions}
             onRenderOption={renderOption}
@@ -217,7 +217,7 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
             disabled={props.userRole !== KanbanRole.OWNER}
           />
           <Dropdown
-            placeholder="Select users"
+            placeholder={props.userRole !== KanbanRole.PARTICIPANT ? "Select users" : ''}
             label="Participants"
             options={dropdownOptions}
             onRenderOption={renderOption}
