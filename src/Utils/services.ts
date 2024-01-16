@@ -1,16 +1,14 @@
 import axios, { AxiosResponse } from "axios";
-import { IAddPhaseDTO } from "../DTO/addPhaseDTO";
-import { ICreateKanbanDTO } from "../DTO/createKanbanDTO";
-import { ILoginDTO } from "../DTO/loginDTO";
-import { IReadIssueDTO } from "../DTO/readIssueDTO";
-import { IRegisterDTO } from "../DTO/registerDTO";
-import { Priority } from "../Enums/priority";
-import { IIssue } from "../Models/issue";
-import { getCurrentUserJWT } from "./functions";
-import { ICreateIssueDTO } from "../DTO/createIssueDTO";
-import { IUpdateIssueDTO } from "../DTO/updateIssueDTO";
-import { IInsertPhaseDTO } from "../DTO/insertPhaseDTO";
 import { IAddExtremityPhaseDTO } from "../DTO/addExtremetyPhaseDTO";
+import { IAddPhaseDTO } from "../DTO/addPhaseDTO";
+import { ICreateIssueDTO } from "../DTO/createIssueDTO";
+import { ICreateKanbanDTO } from "../DTO/createKanbanDTO";
+import { IInsertPhaseDTO } from "../DTO/insertPhaseDTO";
+import { ILoginDTO } from "../DTO/loginDTO";
+import { IRegisterDTO } from "../DTO/registerDTO";
+import { IUpdateIssueDTO } from "../DTO/updateIssueDTO";
+import { getCurrentUserJWT } from "./functions";
+import { IUpdateKanbanDTO } from "../DTO/updateKanbanDTO";
 
 const BASE_URL = "http://localhost:8080/issue-tracker/api/v1/";
 
@@ -117,7 +115,7 @@ export namespace KanbanService {
         });
     };
 
-    export const UpdateKanban = (kanbanDTO: ICreateKanbanDTO) => {
+    export const UpdateKanban = (kanbanDTO: IUpdateKanbanDTO) => {
         return axios.put(`${BASE_URL}kanban`, kanbanDTO, {
             headers: {
                 'Authorization': `Bearer ${getCurrentUserJWT()}`

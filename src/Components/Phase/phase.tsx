@@ -122,7 +122,9 @@ export const PhaseComponent = (props: IPhaseProps): JSX.Element => {
                     issue={currentIssueId === -1 ? undefined : issues.find((issue: IIssue) => issue.id === currentIssueId)}
                 />
             </Modal>
-            <button className={primaryButtonClassName} onClick={() => { setCurrentIssueId(-1); setIsIssueModalOpen(true) }}>Add new issue</button>
+            {props.userRole !== KanbanRole.PARTICIPANT &&
+                <button className={primaryButtonClassName} onClick={() => { setCurrentIssueId(-1); setIsIssueModalOpen(true) }}>Add new issue</button>
+            }
         </Stack>
     );
 };

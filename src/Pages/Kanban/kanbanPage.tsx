@@ -12,6 +12,7 @@ import { KanbanService, PhasesService, UserService } from "../../Utils/services"
 import { buttonClassName, buttonsMenuContainerClassName, iconStyle, kanbanContainerClassName, phaseColors, phaseItemClassName, titleClassName } from "./kanbanPage.styles";
 import { IAddExtremityPhaseDTO } from "../../DTO/addExtremetyPhaseDTO";
 import { IInsertPhaseDTO } from "../../DTO/insertPhaseDTO";
+import { useNavigate } from "react-router-dom";
 
 export const KanbanPage = (): JSX.Element => {
     const [kanban, setKanban] = React.useState<IKanban>();
@@ -21,6 +22,8 @@ export const KanbanPage = (): JSX.Element => {
     const [currentUser, setCurrentUser] = React.useState<IUser>();
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const [draggingPhase, setDraggingPhase] = React.useState<IPhase | null>(null);
+
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         KanbanService.ReadKanbanById(getKanbanIdFromURL())
@@ -192,6 +195,13 @@ export const KanbanPage = (): JSX.Element => {
                             style={iconStyle}
                         />
                         Settings
+                    </button>
+                    <button className={buttonClassName} onClick={() => { navigate("/issueTrackerApp") }}>
+                        <Icon
+                            iconName="AllApps"
+                            style={iconStyle}
+                        />
+                        Your Kanbans
                     </button>
                     <AddPhaseModal
                         isOpen={isAddPhaseModalOpen}

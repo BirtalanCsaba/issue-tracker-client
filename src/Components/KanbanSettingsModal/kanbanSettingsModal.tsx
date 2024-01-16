@@ -3,11 +3,12 @@ import { IKanbanSettingsModalProps } from "./kanbanSettingsModal.types";
 import { DefaultButton, Dropdown, IDropdownOption, ISelectableOption, Label, Modal, PrimaryButton, Stack, TextField } from "@fluentui/react";
 import { modalContainerClassName } from "./kanbanSettingsModal.styles";
 import { IUser } from "../../Models/user";
-import { UserService } from "../../Utils/services";
+import { KanbanService, UserService } from "../../Utils/services";
 import { ErrorMessageStyle, createButtonClassName, dropdownStyles } from "../CreateKanbanModal/createKanbanModal.styles";
 import Avatar from "react-avatar";
 import { getColorByFullName, getFullNameUser, getInitialsFromUser } from "../../Utils/functions";
 import { KanbanRole } from "../../Enums/kanbanRole";
+import { IUpdateKanbanDTO } from "../../DTO/updateKanbanDTO";
 
 export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Element => {
   const [title, setTitle] = React.useState<string>(props.kanban.title);
@@ -63,22 +64,29 @@ export const KanbanSettingsModal = (props: IKanbanSettingsModalProps): JSX.Eleme
       return;
     }
 
-    // const kanban: ICreateKanbanDTO = {
-    //   title: title.trim(),
-    //   description: description.trim(),
-    //   admins: selectedAdmins.map((option) => option.key as number),
-    //   participants: selectedParticipants.map((option) => option.key as number)
-    // };
+    const kanban: IUpdateKanbanDTO = {
+      id: props.kanban.id,
+      title: title.trim(),
+      description: description.trim(),
+      admins: selectedAdmins.map((admin) => admin.id),
+      participants: selectedParticipants.map((participant) => participant.id)
+    };
 
-    // KanbanService.UpdateKanban(kanban)
-    //   .then(function (response) {
-    //     const newKanban: IKanbanShallow = response.data;
-    //     newKanban.role = props.kanban.role;
-    //     props.onUpdatedKanban(kanban);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    KanbanService.UpdateKanban(kanban)
+      .then(function (response) {
+        props.onUpdatedKanban({
+          id: props.kanban.id,
+          title: title.trim(),
+          description: description.trim(),
+          owner: props.kanban.owner,
+          admins: selectedAdmins,
+          participants: selectedParticipants,
+          phase: props.kanban.phase
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     props.onClose();
   };
